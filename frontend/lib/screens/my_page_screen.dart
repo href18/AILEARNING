@@ -183,8 +183,7 @@ class _AssignmentCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              '${assignment.progress.modulesCompleted}/${assignment.progress.modulesTotal} modules fullført'
-              ' • ${assignment.progress.percent}% ferdig',
+              '${assignment.progress.modulesCompleted}/${assignment.progress.modulesTotal} modules fullført • ${assignment.progress.percent}% ferdig',
               style: theme.textTheme.bodyMedium,
             ),
             if (dueLabel != null) ...[
