@@ -12,12 +12,13 @@ class CourseService {
   final SupabaseClient client;
 
   Future<List<Course>> fetchCourses({String locale = 'nb'}) async {
+    final resolvedLocale = _resolveLocale(locale);
     final response = await client
         .from('courses')
         .select(
             'id, code, status, duration_minutes, certificate_valid_months, course_i18n!inner(locale, title, summary), modules(id, type, position, duration_seconds, module_i18n!inner(locale, title, body_md, video_url, simulation_json), quiz:quizzes(id, passing_score, questions:quiz_questions(id, body, type, explanation, options:quiz_options(id, body, is_correct))))')
         .eq('status', 'published')
-        .eq('course_i18n.locale', locale)
+        .eq('course_i18n.locale', resolvedLocale)
         .order('code');
 
     final courses = (response as List<dynamic>)
@@ -54,12 +55,13 @@ class CourseService {
   }
 
   Future<List<Assignment>> fetchAssignmentsForUser({required String userId, String locale = 'nb'}) async {
+    final resolvedLocale = _resolveLocale(locale);
     final response = await client.functions.invoke(
       'api',
       body: {
         'path': '/me/assignments',
         'user_id': userId,
-        'locale': locale,
+        'locale': resolvedLocale,
       },
       headers: {
         'x-edge-path': '/me/assignments',
@@ -75,6 +77,44 @@ class CourseService {
         .map((dynamic item) => Assignment.fromJson(item as Map<String, dynamic>))
         .toList();
     return assignments;
+  }
+
+  Future<Course> createCourseFromDraft({
+    required CourseDraft draft,
+    required String createdBy,
+    String locale = 'nb',
+  }) async {
+    final resolvedLocale = _resolveLocale(locale);
+    final response = await client.functions.invoke(
+      'api',
+      body: {
+        'path': '/admin/courses',
+        'created_by': createdBy,
+        'locale': resolvedLocale,
+        'course': draft.toJson(),
+      },
+      headers: {
+        'x-edge-path': '/admin/courses',
+      },
+    );
+
+    if (response.error != null) {
+      throw response.error!;
+    }
+
+    final payload = response.data as Map<String, dynamic>? ?? {};
+    final courseJson = payload['course'] as Map<String, dynamic>?;
+    if (courseJson == null) {
+      throw Exception('The course creation response was empty.');
+    }
+
+    return Course.fromJson(courseJson);
+  }
+
+  String _resolveLocale(String locale) {
+    if (locale.isEmpty) return 'nb';
+    final short = locale.split(RegExp('[-_]')).first.toLowerCase();
+    return short == 'en' ? 'en' : 'nb';
   }
 
   Course _mapCourse(Map<String, dynamic> row) {

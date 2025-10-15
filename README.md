@@ -24,7 +24,7 @@ supabase db seed --file supabase/seed/seed_demo_course.sql
 supabase functions deploy api
 ```
 
-> ℹ️ The seed file provisions a published **FSE-101** course with video, article, simulation, and quiz modules plus demo admin/participant accounts. The participant user has two assignments so you can explore the new progress dashboard immediately.
+> ℹ️ The seed file provisions a published **FSE-101** course with video, article, simulation, and quiz modules plus demo admin/participant accounts. Use `general.admin@example.com` (super admin) for content authoring flows or `participant@example.com` to explore the learner journey. The participant user has two assignments so you can explore the new progress dashboard immediately.
 
 To run the Supabase stack locally with Docker containers:
 
@@ -63,8 +63,9 @@ supabase functions invoke api --no-verify-jwt --data '{"path":"/me/assignments",
 
    - Animated module transitions
    - A scenario simulation widget with stepper animation
-   - Quiz submission with instant feedback powered by the edge function
+   - Quiz submission with cinematic transitions, progress indicators, and instant feedback powered by the edge function
    - A "My Page" dashboard (tap the profile icon) that shows assignment status, progress, and demo certificate links
+   - A quick-create admin flow (tap the "Nytt demokurs" button) to publish your own forklift-style course with quiz questions
 
 To build a production web bundle:
 

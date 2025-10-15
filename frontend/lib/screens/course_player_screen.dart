@@ -89,6 +89,11 @@ class _CoursePlayerScreenState extends State<CoursePlayerScreen> {
               });
             }
           },
+          onReset: () {
+            setState(() {
+              _quizResult = null;
+            });
+          },
         );
       default:
         return const Text('Unsupported module type');

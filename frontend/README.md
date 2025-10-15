@@ -17,8 +17,9 @@ The default locale is Norwegian Bokmål (`nb`). Update the device/browser locale
 
 - Responsive catalog grid with subtle entry animations
 - Module player that supports video placeholders, markdown articles, interactive simulation steps, and quizzes
-- Quiz grading with real-time feedback and retry support
+- Quiz grading with real-time feedback, animated mentor interludes, and retry support
 - Participant "My Page" dashboard displaying assignment status, progress, and certificates
+- Admin quick-create dialog to seed forklift-style demo courses directly from the catalog screen
 
 ### Production build
 

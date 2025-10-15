@@ -156,3 +156,162 @@ class QuizOption {
     );
   }
 }
+
+class CourseDraft {
+  CourseDraft({
+    required this.code,
+    this.status = 'published',
+    this.durationMinutes,
+    this.certificateValidMonths,
+    required this.translations,
+    required this.modules,
+  });
+
+  final String code;
+  final String status;
+  final int? durationMinutes;
+  final int? certificateValidMonths;
+  final List<CourseTranslationDraft> translations;
+  final List<ModuleDraft> modules;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'status': status,
+      if (durationMinutes != null) 'durationMinutes': durationMinutes,
+      if (certificateValidMonths != null)
+        'certificateValidMonths': certificateValidMonths,
+      'translations': translations.map((t) => t.toJson()).toList(),
+      'modules': modules.map((m) => m.toJson()).toList(),
+    };
+  }
+}
+
+class CourseTranslationDraft {
+  CourseTranslationDraft({
+    required this.locale,
+    required this.title,
+    required this.summary,
+  });
+
+  final String locale;
+  final String title;
+  final String summary;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'locale': locale,
+      'title': title,
+      'summary': summary,
+    };
+  }
+}
+
+class ModuleDraft {
+  ModuleDraft({
+    required this.type,
+    required this.position,
+    required this.translations,
+    this.durationSeconds,
+    this.quiz,
+  });
+
+  final String type;
+  final int position;
+  final int? durationSeconds;
+  final List<ModuleTranslationDraft> translations;
+  final QuizDraft? quiz;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'type': type,
+      'position': position,
+      if (durationSeconds != null) 'durationSeconds': durationSeconds,
+      'translations': translations.map((t) => t.toJson()).toList(),
+      if (quiz != null) 'quiz': quiz!.toJson(),
+    };
+  }
+}
+
+class ModuleTranslationDraft {
+  ModuleTranslationDraft({
+    required this.locale,
+    required this.title,
+    this.body,
+    this.videoUrl,
+    this.simulation,
+  });
+
+  final String locale;
+  final String title;
+  final String? body;
+  final String? videoUrl;
+  final Map<String, dynamic>? simulation;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'locale': locale,
+      'title': title,
+      if (body != null) 'body': body,
+      if (videoUrl != null) 'videoUrl': videoUrl,
+      if (simulation != null) 'simulation': simulation,
+    };
+  }
+}
+
+class QuizDraft {
+  QuizDraft({
+    this.passingScore = 80,
+    required this.questions,
+  });
+
+  final int passingScore;
+  final List<QuizQuestionDraft> questions;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'passingScore': passingScore,
+      'questions': questions.map((q) => q.toJson()).toList(),
+    };
+  }
+}
+
+class QuizQuestionDraft {
+  QuizQuestionDraft({
+    required this.body,
+    this.type = 'single',
+    this.explanation,
+    required this.options,
+  });
+
+  final String body;
+  final String type;
+  final String? explanation;
+  final List<QuizOptionDraft> options;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'body': body,
+      'type': type,
+      if (explanation != null) 'explanation': explanation,
+      'options': options.map((o) => o.toJson()).toList(),
+    };
+  }
+}
+
+class QuizOptionDraft {
+  QuizOptionDraft({
+    required this.body,
+    this.isCorrect = false,
+  });
+
+  final String body;
+  final bool isCorrect;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'body': body,
+      'isCorrect': isCorrect,
+    };
+  }
+}

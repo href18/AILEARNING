@@ -1,5 +1,6 @@
 insert into public.users (id, email, full_name, preferred_locale) values
   ('11111111-1111-1111-1111-111111111111', 'admin@example.com', 'Ingrid Admin', 'nb'),
+  ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'general.admin@example.com', 'General Admin', 'en'),
   ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'participant@example.com', 'Ola Deltaker', 'nb')
   on conflict (id) do nothing;
 
@@ -10,6 +11,7 @@ insert into public.orgs (id, name, billing_plan) values
 insert into public.org_members (org_id, user_id, role)
 values
   ('22222222-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', 'admin'),
+  ('22222222-2222-2222-2222-222222222222', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'super_admin'),
   ('22222222-2222-2222-2222-222222222222', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'participant')
 on conflict (org_id, user_id) do nothing;
 
