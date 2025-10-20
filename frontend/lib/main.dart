@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'models/course.dart';
 import 'screens/catalog_screen.dart';
 import 'screens/course_player_screen.dart';
+import 'screens/home_screen.dart';
 import 'services/course_service.dart';
 import 'supabase_options.dart';
 
@@ -33,17 +34,23 @@ class ComplianceTrainingApp extends StatelessWidget {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => CatalogScreen(courseService: courseService),
+        builder: (context, state) => const HomeScreen(),
         routes: [
           GoRoute(
-            path: 'course/:id',
-            builder: (context, state) {
-              final course = state.extra as Course?;
-              if (course == null) {
-                return const _MissingCourse();
-              }
-              return CoursePlayerScreen(course: course, service: courseService);
-            },
+            path: 'catalog',
+            builder: (context, state) => CatalogScreen(courseService: courseService),
+            routes: [
+              GoRoute(
+                path: 'course/:id',
+                builder: (context, state) {
+                  final course = state.extra as Course?;
+                  if (course == null) {
+                    return const _MissingCourse();
+                  }
+                  return CoursePlayerScreen(course: course, service: courseService);
+                },
+              ),
+            ],
           ),
         ],
       ),
@@ -76,8 +83,18 @@ class _MissingCourse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: const Center(
-        child: Text('Course not found. Return to the catalog.'),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Course not found. Return to the catalog.'),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => GoRouter.of(context).go('/catalog'),
+              child: const Text('Back to catalog'),
+            ),
+          ],
+        ),
       ),
     );
   }
