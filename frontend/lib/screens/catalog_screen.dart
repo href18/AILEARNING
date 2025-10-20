@@ -88,7 +88,7 @@ class _CourseCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => context.go('/course/${course.id}', extra: course),
+        onTap: () => context.go('/catalog/course/${course.id}', extra: course),
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
