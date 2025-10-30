@@ -8,6 +8,18 @@ class Course {
     required this.summary,
     required this.durationMinutes,
     required this.certificateValidMonths,
+    required this.level,
+    required this.language,
+    required this.updatedAtText,
+    required this.learnersCount,
+    required this.rating,
+    required this.reviewCount,
+    required this.author,
+    required this.outcomes,
+    required this.prerequisites,
+    required this.captions,
+    required this.resources,
+    this.coverImageUrl,
     required this.modules,
   });
 
@@ -17,10 +29,23 @@ class Course {
   final String summary;
   final int? durationMinutes;
   final int? certificateValidMonths;
+  final String level;
+  final String language;
+  final String updatedAtText;
+  final int learnersCount;
+  final double rating;
+  final int reviewCount;
+  final CourseAuthor author;
+  final List<String> outcomes;
+  final List<String> prerequisites;
+  final List<String> captions;
+  final List<CourseResource> resources;
+  final String? coverImageUrl;
   final List<CourseModule> modules;
 
   factory Course.fromJson(Map<String, dynamic> json) {
     final modulesJson = json['modules'] as List<dynamic>? ?? [];
+    final resourcesJson = json['resources'] as List<dynamic>? ?? [];
     return Course(
       id: json['id'] as String,
       code: json['code'] as String,
@@ -28,9 +53,72 @@ class Course {
       summary: json['summary'] as String? ?? '',
       durationMinutes: json['durationMinutes'] as int?,
       certificateValidMonths: json['certificateValidMonths'] as int?,
+      level: json['level'] as String? ?? 'Beginner',
+      language: json['language'] as String? ?? 'English',
+      updatedAtText: json['updatedAtText'] as String? ?? '',
+      learnersCount: json['learnersCount'] as int? ?? 0,
+      rating: (json['rating'] as num?)?.toDouble() ?? 0,
+      reviewCount: json['reviewCount'] as int? ?? 0,
+      author: CourseAuthor.fromJson(
+        json['author'] as Map<String, dynamic>? ?? <String, dynamic>{},
+      ),
+      outcomes: (json['outcomes'] as List<dynamic>? ?? [])
+          .map((dynamic value) => value.toString())
+          .toList(),
+      prerequisites: (json['prerequisites'] as List<dynamic>? ?? [])
+          .map((dynamic value) => value.toString())
+          .toList(),
+      captions: (json['captions'] as List<dynamic>? ?? [])
+          .map((dynamic value) => value.toString())
+          .toList(),
+      resources: resourcesJson
+          .map((dynamic value) =>
+              CourseResource.fromJson(value as Map<String, dynamic>))
+          .toList(),
+      coverImageUrl: json['coverImageUrl'] as String?,
       modules: modulesJson
           .map((m) => CourseModule.fromJson(m as Map<String, dynamic>))
           .toList(),
+    );
+  }
+}
+
+class CourseAuthor {
+  CourseAuthor({
+    required this.name,
+    required this.title,
+    required this.bio,
+  });
+
+  final String name;
+  final String? title;
+  final String? bio;
+
+  factory CourseAuthor.fromJson(Map<String, dynamic> json) {
+    return CourseAuthor(
+      name: json['name'] as String? ?? '',
+      title: json['title'] as String?,
+      bio: json['bio'] as String?,
+    );
+  }
+}
+
+class CourseResource {
+  CourseResource({
+    required this.label,
+    required this.url,
+    required this.type,
+  });
+
+  final String label;
+  final String url;
+  final String type;
+
+  factory CourseResource.fromJson(Map<String, dynamic> json) {
+    return CourseResource(
+      label: json['label'] as String? ?? '',
+      url: json['url'] as String? ?? '',
+      type: json['type'] as String? ?? 'link',
     );
   }
 }

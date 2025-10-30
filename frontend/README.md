@@ -13,6 +13,12 @@ flutter run -d chrome \
 
 The default locale is Norwegian Bokmål (`nb`). Update the device/browser locale to switch between Norwegian and English seeded content.
 
+`lib/supabase_options.dart` ships with the demo project's public configuration baked in, so you can run the app without supplying any extra flags. Provide your own Supabase project credentials via the `--dart-define` overrides shown above when targeting another backend.
+
+## Authentication
+
+The catalog now requires a Supabase email/password account. Create users from the Supabase Dashboard (Authentication → Users) or via the Admin API. The login screen also supports self-service registration using Supabase Auth; depending on your project policy, users may need to confirm their email before signing in. After authentication the catalog and course player become available. Use the "Sign out" action in the catalog app bar to switch accounts.
+
 ### Features
 
 - Responsive catalog grid with subtle entry animations
